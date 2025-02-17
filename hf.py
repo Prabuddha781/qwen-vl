@@ -12,7 +12,9 @@ processor = AutoProcessor.from_pretrained("Qwen/Qwen2.5-VL-7B-Instruct")
 
 counter = 0
 
-prompt = "You are a self-driving car. Your job is to keep going forward while staying centered on the pavement. Which direction should you steer based on this road image? Answer with exactly one word: LEFT, RIGHT, HEAVY_LEFT, HEAVY_RIGHT, or STRAIGHT"
+prompt = """You are a self-driving car. Your camera is situated on the top of your car and you are looking ahead. You need to stay strictly inside the pavement. If you are not centered on the pavement, output one of SLIGHT_LEFT or SLIGHT_RIGHT so that you can steer back to the center. If you are at an intersection, output HEAVY_LEFT, HEAVY_RIGHT, SLIGHT_LEFT or SLIGHT_RIGHT to turn. If you are already centered on the pavement, output STRAIGHT.
+
+ONLY output one of these values: LEFT, RIGHT, HEAVY_LEFT, HEAVY_RIGHT, SLIGHT_LEFT, SLIGHT_RIGHT, STRAIGHT and in upper casing all the time."""
 
 try:
     response = requests.get("https://raw.githubusercontent.com/Prabuddha781/qwen-vl/main/prompt")
@@ -37,7 +39,6 @@ def process_image(image):
                 prompt = response.text
         except requests.RequestException as e:
             print(f"Error fetching prompt: {e}")
-            prompt = "You are a self-driving car. Your job is to keep going forward while staying centered on the pavement. Which direction should you steer based on this image? Answer with exactly one word: LEFT, RIGHT, HEAVY_LEFT, HEAVY_RIGHT, or STRAIGHT"
 
     messages = [
         {
@@ -69,9 +70,7 @@ def process_image(image):
         return_tensors="pt",
     )
     inputs = inputs.to("cuda")
-    print("inputs")
-    # Generate output
-    # print(inputs)
+        # Generate output
     generated_ids = model.generate(**inputs, max_new_tokens=128)
     generated_ids_trimmed = [
         out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
