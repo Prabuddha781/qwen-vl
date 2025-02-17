@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN pip install --target=/workspace -r requirements.txt
+RUN pip install --target=/app -r requirements.txt
 
 ENV HF_HUB_CACHE=/workspace
 
