@@ -25,7 +25,6 @@ except requests.RequestException as e:
 
 def process_image(image):
     # Create message structure for the model
-    print("received image")
     global counter
     global prompt
     counter += 1
@@ -55,14 +54,12 @@ def process_image(image):
             ]
         }
     ]
-
-    print("using prompt: ", prompt)
     
     # Prepare inputs for inference
     text = processor.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
     )
-    print("processed text")
+
     image_inputs, video_inputs = process_vision_info(messages)
     inputs = processor(
         text=[text],
@@ -76,13 +73,10 @@ def process_image(image):
     # Generate output
     # print(inputs)
     generated_ids = model.generate(**inputs, max_new_tokens=128)
-    print("generated ids top")
     generated_ids_trimmed = [
         out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
     ]
-    print("generated ids")
     output_text = processor.batch_decode(
         generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
     )[0]  # Get first (and only) result
-    print("output text")
     return output_text

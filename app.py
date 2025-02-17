@@ -18,7 +18,6 @@ def handle_request():
     try:
         # Receive image data from client
         image_data = request.data
-        logging.info("received image data")
 
         try:
             # Deserialize the image data
