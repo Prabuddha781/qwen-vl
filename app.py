@@ -6,13 +6,6 @@ from hf import process_image
 
 app = Flask(__name__)
 
-SMALL_FORWARD = 410
-STEERING_LEFT = 350
-STEERING_LEFT_MORE = 330
-STEERING_MIDDLE = 375
-STEERING_RIGHT = 400
-STEERING_RIGHT_MORE = 420
-
 @app.route('/', methods=['POST'])
 def handle_request():
     try:
@@ -25,13 +18,9 @@ def handle_request():
             image_payload = "data:image;base64," + image_payload
             results = process_image(image_payload)
             print("results", results)
-            # For now using dummy values
-            steering = STEERING_MIDDLE
-            throttle = SMALL_FORWARD
 
             response = {
-                "steering": steering,
-                "throttle": throttle
+                "direction": results,
             }
             
             return jsonify(response)
