@@ -1,0 +1,3 @@
+git+https://github.com/huggingface/transformers.git
+qwen-vl-utils
+websockets
