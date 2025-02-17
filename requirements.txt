@@ -2,3 +2,4 @@ git+https://github.com/huggingface/transformers.git
 qwen-vl-utils
 websockets
 accelerate>=0.26.0
+requests

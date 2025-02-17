@@ -1,5 +1,6 @@
 from transformers import Qwen2_5_VLForConditionalGeneration, AutoTokenizer, AutoProcessor
 from qwen_vl_utils import process_vision_info
+import requests
 
 # default: Load the model on the available device(s)
 model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
@@ -9,9 +10,24 @@ model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
 # default processer
 processor = AutoProcessor.from_pretrained("Qwen/Qwen2.5-VL-7B-Instruct")
 
+counter = 0
+
 def process_image(image):
     # Create message structure for the model
     print("received image")
+    counter += 1
+    prompt = "You are a self-driving car. Your job is to keep going forward while staying centered on the pavement. Which direction should you steer based on this road image? Answer with exactly one word: LEFT, RIGHT, HEAVY_LEFT, HEAVY_RIGHT, or STRAIGHT"
+
+    if counter % 30 == 0:
+        try:
+            response = requests.get("https://raw.githubusercontent.com/Prabuddha781/qwen-vl/main/prompt")
+            if response.status_code == 200 and response.text != prompt:
+                print("updating prompt. new prompt: ", response.text)
+                prompt = response.text
+        except requests.RequestException as e:
+            print(f"Error fetching prompt: {e}")
+            prompt = "You are a self-driving car. Your job is to keep going forward while staying centered on the pavement. Which direction should you steer based on this image? Answer with exactly one word: LEFT, RIGHT, HEAVY_LEFT, HEAVY_RIGHT, or STRAIGHT"
+
     messages = [
         {
             "role": "user",
@@ -22,11 +38,13 @@ def process_image(image):
                 },
                 {
                     "type": "text",
-                    "text": "You are a self-driving car. Your job is to keep going forward while staying centered on the road. Which direction should you steer based on this road image? Answer with exactly one word: LEFT, RIGHT, HEAVY_LEFT, HEAVY_RIGHT, or STRAIGHT"
+                    "text": prompt
                 }
             ]
         }
     ]
+
+    print("using prompt: ", prompt)
     
     # Prepare inputs for inference
     text = processor.apply_chat_template(
