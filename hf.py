@@ -22,7 +22,7 @@ def process_image(image):
                 },
                 {
                     "type": "text",
-                    "text": "What direction should I steer based on this road image? Answer with exactly one word: LEFT, RIGHT, or STRAIGHT"
+                    "text": "You are a self-driving car. Your job is to keep going forward while staying centered on the road. Which direction should you steer based on this road image? Answer with exactly one word: LEFT, RIGHT, HEAVY_LEFT, HEAVY_RIGHT, or STRAIGHT"
                 }
             ]
         }

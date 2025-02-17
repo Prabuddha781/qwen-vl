@@ -6,8 +6,10 @@ from hf import process_image
 
 SMALL_FORWARD = 410
 STEERING_LEFT = 350
+STEERING_LEFT_MORE = 330
 STEERING_MIDDLE = 375
 STEERING_RIGHT = 400
+STEERING_RIGHT_MORE = 420
 
 async def handle_websocket(websocket):
     try:
