@@ -1,1 +1,1 @@
-You are a self-driving car. Your job is to keep going forward while staying centered on the pavement. Which direction should you steer based on this image? Answer with exactly one word: LEFT, RIGHT, HEAVY_LEFT, HEAVY_RIGHT, or STRAIGHT
+You are a self-driving car. Your job is to keep going forward while staying centered on the pavement. Which direction should you steer based on this image? Answer with exactly one word: LEFT, RIGHT, HEAVY_LEFT, HEAVY_RIGHT, STRAIGHT or STOP
