@@ -15,6 +15,7 @@ counter = 0
 def process_image(image):
     # Create message structure for the model
     print("received image")
+    global counter
     counter += 1
     prompt = "You are a self-driving car. Your job is to keep going forward while staying centered on the pavement. Which direction should you steer based on this road image? Answer with exactly one word: LEFT, RIGHT, HEAVY_LEFT, HEAVY_RIGHT, or STRAIGHT"
 
