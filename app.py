@@ -1,6 +1,7 @@
 import websockets
 import asyncio
 import json
+import logging
 
 from hf import process_image
 
@@ -16,6 +17,7 @@ async def handle_websocket(websocket):
         while True:
             # Receive image data from client
             image_data = await websocket.recv()
+            logging.info("received image data")
 
             try:
                 # Deserialize the image data
@@ -47,6 +49,7 @@ async def handle_websocket(websocket):
 async def start_server():
     server = await websockets.serve(handle_websocket, "0.0.0.0", 8080)
     print("WebSocket server started on ws://0.0.0.0:8080")
+    logging.info("WebSocket server started on ws://0.0.0.0:8080")
     await server.wait_closed()
 
 if __name__ == "__main__":
