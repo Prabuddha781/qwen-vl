@@ -4,9 +4,11 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y nano
 
-COPY . .
+COPY requirements.txt .
 
 RUN pip install --target=/app -r requirements.txt
+
+COPY . .
 
 ENV HF_HUB_CACHE=/workspace
 
