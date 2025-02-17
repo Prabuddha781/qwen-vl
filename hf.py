@@ -12,12 +12,23 @@ processor = AutoProcessor.from_pretrained("Qwen/Qwen2.5-VL-7B-Instruct")
 
 counter = 0
 
+prompt = "You are a self-driving car. Your job is to keep going forward while staying centered on the pavement. Which direction should you steer based on this road image? Answer with exactly one word: LEFT, RIGHT, HEAVY_LEFT, HEAVY_RIGHT, or STRAIGHT"
+
+try:
+    response = requests.get("https://raw.githubusercontent.com/Prabuddha781/qwen-vl/main/prompt")
+    if response.status_code == 200 and response.text != prompt:
+        print("updating prompt. new prompt: ", response.text)
+        prompt = response.text
+except requests.RequestException as e:
+    print(f"Error fetching prompt: {e}")
+
+
 def process_image(image):
     # Create message structure for the model
     print("received image")
     global counter
+    global prompt
     counter += 1
-    prompt = "You are a self-driving car. Your job is to keep going forward while staying centered on the pavement. Which direction should you steer based on this road image? Answer with exactly one word: LEFT, RIGHT, HEAVY_LEFT, HEAVY_RIGHT, or STRAIGHT"
 
     if counter % 30 == 0:
         try:
